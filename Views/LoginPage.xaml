@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.LoginPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid BackgroundColor="{StaticResource CoffeeBackground}">
+        <ScrollView BackgroundColor="{StaticResource CoffeeBackground}">
+            <VerticalStackLayout Padding="24,16,24,32" Spacing="18">
+                <Grid ColumnDefinitions="36,*">
+                    <Label Text="‹" TextColor="{StaticResource GoldPrimary}" FontSize="34" VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Column="1" Text="Login" Style="{StaticResource HeaderLabel}" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="8" Margin="0,34,0,20">
+                    <Label Text="COFFEE" TextColor="{StaticResource GoldPrimary}" FontSize="14" CharacterSpacing="5" HorizontalTextAlignment="Center" />
+                    <Label Text="WELCOME BACK" Style="{StaticResource HeroLabel}" FontSize="23" />
+                    <Label Text="Login to access seasonal loyalty" TextColor="{StaticResource MutedText}" FontSize="13" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <Label Text="EMAIL OR PHONE" Style="{StaticResource SectionLabel}" />
+                <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                    <Entry Placeholder="Email or phone number" Keyboard="Email" Text="{Binding EmailOrPhone}" />
+                </Border>
+
+                <Label Text="PASSWORD" Style="{StaticResource SectionLabel}" />
+                <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                    <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+                </Border>
+
+                <Label Text="{Binding ValidationMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasValidationMessage}" />
+
+                <controls:GoldButton Text="LOGIN" Command="{Binding LoginCommand}" Margin="0,8,0,0" />
+
+                <Label Text="Forgot Password?" Style="{StaticResource LinkTextStyle}" Margin="0,4,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="Don't have an account? Sign Up" Style="{StaticResource LinkTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignupCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="Continue as Guest" Style="{StaticResource LinkTextStyle}" TextColor="{StaticResource MutedText}" Margin="0,10,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GuestCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

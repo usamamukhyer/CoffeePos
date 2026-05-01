@@ -1,0 +1,10 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="12" fill="#f7f7f2"/><rect y="112" width="180" height="68" fill="#b8b8b8"/>
+  <path d="M62 54h56l-9 84H71L62 54z" fill="#F3A6AB" stroke="#D78089" stroke-width="4"/>
+  <path d="M72 50h36" stroke="#EFCBD0" stroke-width="6" stroke-linecap="round"/>
+  <path d="M95 43l20-34" stroke="#EFCBD0" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="108" cy="88" r="17" fill="#F7D35C" opacity=".82"/>
+  <path d="M96 100c14-8 24-18 32-33" stroke="#C87828" stroke-width="3"/>
+  <ellipse cx="81" cy="91" rx="8" ry="13" fill="#6F3A1B"/>
+  <text x="90" y="139" font-size="17" fill="#fff" font-family="Arial" font-weight="700" text-anchor="middle">LIMONADA</text>
+</svg>

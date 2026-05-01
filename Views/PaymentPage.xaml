@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.PaymentPage"
+             SafeAreaEdges="Container"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="0,0,0,18" Spacing="18">
+                <Label Text="PAYMENT" Style="{StaticResource HeaderLabel}" Padding="10,14" BackgroundColor="{StaticResource CoffeeHeader}" />
+
+                <VerticalStackLayout Padding="14,0" Spacing="14">
+                    <Border Stroke="{StaticResource DimBorder}" StrokeThickness="1" BackgroundColor="{StaticResource CoffeeSurface}" Padding="16">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="14">
+                            <Label Text="Order Summary" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource GoldPrimary}" />
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                                <Label Text="Items total" TextColor="{StaticResource MutedText}" FontSize="14" />
+                                <Label Grid.Column="1" Text="{Binding ItemsTotalText}" FontSize="14" FontAttributes="Bold" />
+
+                                <Label Grid.Row="1" Text="Tax / IVA" TextColor="{StaticResource MutedText}" FontSize="14" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TaxText}" FontSize="14" FontAttributes="Bold" />
+
+                                <BoxView Grid.Row="2" Grid.ColumnSpan="2" HeightRequest="1" Color="{StaticResource DimBorder}" Margin="0,4" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Grand total" FontSize="18" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding GrandTotalText}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource GoldPrimary}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Stroke="{StaticResource GoldBorder}" StrokeThickness="1" BackgroundColor="{StaticResource CoffeeSurfaceAlt}" Padding="16">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" RowDefinitions="Auto,Auto">
+                            <Border WidthRequest="22" HeightRequest="22" Stroke="{StaticResource GoldPrimary}" BackgroundColor="{StaticResource GoldPrimary}" VerticalOptions="Center" Grid.RowSpan="2">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="11" />
+                                </Border.StrokeShape>
+                                <Label Text="OK" TextColor="{StaticResource CoffeeHeader}" FontSize="9" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <Label Grid.Column="1" Text="Cash on Delivery" FontSize="17" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="Pay when your order is delivered." TextColor="{StaticResource MutedText}" FontSize="12" />
+                            <Label Grid.Column="2" Grid.RowSpan="2" Text="Selected" TextColor="{StaticResource GoldPrimary}" FontSize="12" VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="{StaticResource GoldPrimary}" />
+                    <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1" Padding="14,12" BackgroundColor="{StaticResource CoffeeSurface}">
+            <controls:GoldButton Text="PLACE ORDER" Command="{Binding PlaceOrderCommand}" />
+        </Grid>
+        <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Cart" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.OrderSetupPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <ScrollView Grid.Row="0" BackgroundColor="{StaticResource CoffeeBackground}">
+            <VerticalStackLayout Padding="28,16,28,20" Spacing="20">
+                <Label Text="Order Setup" Style="{StaticResource HeaderLabel}" />
+                <Label Text="START YOUR ORDER" Style="{StaticResource HeroLabel}" Margin="0,12,0,4" />
+
+                <controls:SectionTitle Text="SELECT BRANCH" />
+                <Border Stroke="{StaticResource GoldBorder}"
+                        StrokeThickness="1.4"
+                        Padding="14,2"
+                        BackgroundColor="{StaticResource CoffeeSurfaceAlt}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" HeightRequest="48">
+                        <Label Text="v"
+                               TextColor="{StaticResource GoldPrimary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                        <Picker Grid.Column="1"
+                                Title="Choose branch"
+                                ItemsSource="{Binding Branches}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedBranch}"
+                                TextColor="{StaticResource TextWhite}"
+                                TitleColor="{StaticResource MutedText}"
+                                BackgroundColor="Transparent" />
+                    </Grid>
+                </Border>
+
+                <Label Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ValidationMessageStyle}"
+                       IsVisible="{Binding HasError}"
+                       HorizontalTextAlignment="Start" />
+
+                <controls:SectionTitle Text="WHO IS THIS FOR?" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                    <controls:SelectionCard Title="FOR ME"
+                                            IconSource="icon_person_gold.png"
+                                            IsSelected="{Binding IsForMeSelected}"
+                                            Command="{Binding SelectOrderTypeCommand}"
+                                            CommandParameter="ForMe" />
+                    <controls:SelectionCard Grid.Column="1"
+                                            Title="SEND GIFT"
+                                            IconSource="icon_gift_gold.png"
+                                            IsSelected="{Binding IsGiftSelected}"
+                                            Command="{Binding SelectOrderTypeCommand}"
+                                            CommandParameter="Gift" />
+                </Grid>
+
+                <controls:SectionTitle Text="PICKUP TIMING" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                    <controls:SelectionCard Title="NOW"
+                                            Subtitle="Ready in 10m"
+                                            IsSelected="{Binding IsNowSelected}"
+                                            Command="{Binding SelectPickupCommand}"
+                                            CommandParameter="Now" />
+                    <controls:SelectionCard Grid.Column="1"
+                                            Title="PRE-ORDER"
+                                            Subtitle="Pick a time"
+                                            IsSelected="{Binding IsPreOrderSelected}"
+                                            Command="{Binding SelectPickupCommand}"
+                                            CommandParameter="PreOrder" />
+                </Grid>
+
+                <Border IsVisible="{Binding IsPickupDateTimeVisible}"
+                        Stroke="{StaticResource DimBorder}"
+                        StrokeThickness="1.2"
+                        Padding="14"
+                        BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="DATE" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
+                            <DatePicker Date="{Binding PickupDate}"
+                                        MinimumDate="{Binding MinimumPickupDate}"
+                                        TextColor="{StaticResource TextWhite}"
+                                        BackgroundColor="Transparent" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="TIME" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
+                            <TimePicker Time="{Binding PickupTime}"
+                                        TextColor="{StaticResource TextWhite}"
+                                        BackgroundColor="Transparent" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1"
+              Padding="28,10,28,14"
+              BackgroundColor="{StaticResource CoffeeBackground}">
+            <controls:GoldButton Text="CONTINUE" Command="{Binding ContinueCommand}" />
+        </Grid>
+        <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Order" />
+    </Grid>
+</ContentPage>

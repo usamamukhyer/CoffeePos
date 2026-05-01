@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Name="Page"
+             x:Class="DBCafeteria.Views.MyBasketPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <VerticalStackLayout Grid.Row="0" Spacing="0">
+            <Label Text="MY BASKET" Style="{StaticResource HeaderLabel}" Padding="10,14" BackgroundColor="{StaticResource CoffeeHeader}" />
+            <CollectionView ItemsSource="{Binding BasketItems}" SelectionMode="None" Margin="8,14,8,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="{StaticResource DimBorder}" StrokeThickness="1" BackgroundColor="{StaticResource CoffeeSurface}" Margin="0,0,0,10" Padding="12">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Grid ColumnDefinitions="44,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="8">
+                                <Image Source="{Binding Image}" WidthRequest="36" HeightRequest="36" VerticalOptions="Start" Grid.RowSpan="2" />
+                                <Label Grid.Column="1" Text="{Binding Name}" FontSize="16" FontAttributes="Bold" LineBreakMode="TailTruncation" MaxLines="2" />
+                                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" Spacing="1" WidthRequest="88">
+                                    <Label Text="{Binding PriceText}" FontSize="15" FontAttributes="Bold" HorizontalTextAlignment="End" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding UnitPriceText}" TextColor="{StaticResource MutedText}" FontSize="9" HorizontalTextAlignment="End" LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+                                <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetailsText}" TextColor="{StaticResource MutedText}" FontSize="12" LineBreakMode="TailTruncation" />
+                                <controls:QuantityStepper Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Quantity="{Binding Quantity}" IncrementCommand="{Binding BindingContext.IncrementCommand, Source={x:Reference Page}}" DecrementCommand="{Binding BindingContext.DecrementCommand, Source={x:Reference Page}}" CommandParameter="{Binding .}" HorizontalOptions="End" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <Grid Grid.Row="1" Padding="14,12" BackgroundColor="{StaticResource CoffeeSurface}" ColumnDefinitions="*,138">
+            <VerticalStackLayout>
+                <Label Text="TOTAL AMOUNT" TextColor="{StaticResource MutedText}" FontSize="11" />
+                <Label Text="{Binding TotalAmountText}" FontSize="24" FontAttributes="Bold" />
+                <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" />
+            </VerticalStackLayout>
+            <controls:GoldButton Grid.Column="1" Text="CHECKOUT" Command="{Binding CheckoutCommand}" />
+        </Grid>
+        <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Cart" />
+    </Grid>
+</ContentPage>

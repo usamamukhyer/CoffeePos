@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.GuestDetailsPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <VerticalStackLayout Grid.Row="0" Padding="28,18,28,28" Spacing="22">
+            <Grid ColumnDefinitions="36,*">
+                <Label Text="&lt;" TextColor="{StaticResource GoldPrimary}" FontSize="30" FontAttributes="Bold" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Grid.Column="1" Text="Guest Details" Style="{StaticResource HeaderLabel}" />
+            </Grid>
+
+            <Label Text="CONTINUE AS GUEST" Style="{StaticResource HeroLabel}" Margin="0,18,0,6" />
+
+            <controls:SectionTitle Text="YOUR NAME" />
+            <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Entry Placeholder="Enter your name" Text="{Binding GuestName}" />
+            </Border>
+
+            <controls:SectionTitle Text="PHONE (OPTIONAL)" />
+            <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Entry Placeholder="+1..." Keyboard="Telephone" Text="{Binding GuestPhone}" />
+            </Border>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="{StaticResource GoldPrimary}" />
+            <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" />
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1" Padding="28,10,28,18" BackgroundColor="{StaticResource CoffeeBackground}">
+            <controls:GoldButton Text="CONTINUE" Command="{Binding ContinueCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

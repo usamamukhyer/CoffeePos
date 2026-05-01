@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.GiftDetailsPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <ScrollView Grid.Row="0" BackgroundColor="{StaticResource CoffeeBackground}">
+            <VerticalStackLayout Padding="22,14,22,22" Spacing="18">
+                <Grid ColumnDefinitions="36,*">
+                    <Label Text="&lt;"
+                           TextColor="{StaticResource GoldPrimary}"
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Column="1" Text="Gift Details" Style="{StaticResource HeaderLabel}" />
+                </Grid>
+
+                <Label Text="GIFT PREVIEW"
+                       FontSize="12"
+                       CharacterSpacing="2"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,12,0,2" />
+                <Border Stroke="{StaticResource GoldPrimary}"
+                        StrokeThickness="1.8"
+                        Padding="20"
+                        BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,64" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
+                        <Label Grid.ColumnSpan="2"
+                               Text="A SPECIAL TREAT"
+                               Style="{StaticResource HeroLabel}"
+                               FontSize="20"
+                               Margin="0,10,0,12" />
+                        <Label Grid.Row="1"
+                               Text="{Binding PreviewRecipientName}"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Row="2"
+                               Text="{Binding PreviewMessage}"
+                               TextColor="{StaticResource MutedText}"
+                               FontSize="13"
+                               HorizontalTextAlignment="Center" />
+                        <Image Grid.Row="1"
+                               Grid.RowSpan="2"
+                               Grid.Column="1"
+                               Source="icon_gift_gold.png"
+                               HeightRequest="48"
+                               WidthRequest="48"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:SectionTitle Text="RECIPIENT NAME" />
+                <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Entry Placeholder="Search recipient by name..."
+                           Text="{Binding RecipientSearchText}"
+                           ReturnCommand="{Binding SearchRecipientCommand}" />
+                </Border>
+
+                <Border IsVisible="{Binding HasSuggestions}"
+                        Stroke="{StaticResource GoldBorder}"
+                        StrokeThickness="1"
+                        Padding="0"
+                        BackgroundColor="{StaticResource CoffeeSurfaceAlt}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <CollectionView ItemsSource="{Binding CustomerSuggestions}"
+                                    SelectionMode="None"
+                                    MaximumHeightRequest="220">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="14,10"
+                                      RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding Name}"
+                                           FontAttributes="Bold"
+                                           FontSize="14" />
+                                    <Label Grid.Row="1"
+                                           Text="{Binding Phone}"
+                                           TextColor="{StaticResource MutedText}"
+                                           FontSize="12" />
+                                    <Button Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Text="SELECT"
+                                            FontSize="11"
+                                            Padding="12,0"
+                                            HeightRequest="34"
+                                            CornerRadius="8"
+                                            BackgroundColor="{StaticResource GoldPrimary}"
+                                            TextColor="#1D140A"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectRecipientCommand}"
+                                            CommandParameter="{Binding .}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+
+                <Label Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ValidationMessageStyle}"
+                       IsVisible="{Binding HasError}"
+                       HorizontalTextAlignment="Start" />
+
+                <controls:SectionTitle Text="RECIPIENT PHONE" />
+                <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Entry Placeholder="+1..."
+                           Keyboard="Telephone"
+                           Text="{Binding RecipientPhone}"
+                           IsReadOnly="{Binding IsRecipientPhoneReadOnly}" />
+                </Border>
+
+                <controls:SectionTitle Text="PERSONAL MESSAGE" />
+                <Border Stroke="{StaticResource DimBorder}" Padding="12" BackgroundColor="{StaticResource CoffeeSurface}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Editor Placeholder="Write a short note..."
+                            AutoSize="TextChanges"
+                            HeightRequest="88"
+                            Text="{Binding PersonalMessage}" />
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1"
+              Padding="22,10,22,14"
+              BackgroundColor="{StaticResource CoffeeBackground}">
+            <controls:GoldButton Text="CONFIRM &amp; CHOOSE COFFEE" Command="{Binding ConfirmGiftCommand}" />
+        </Grid>
+        <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Order" />
+    </Grid>
+</ContentPage>

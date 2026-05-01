@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DBCafeteria.Controls"
+             x:Class="DBCafeteria.Views.ProfilePage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid RowDefinitions="*,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
+        <VerticalStackLayout Padding="24,16" Spacing="22">
+            <Label Text="Profile" Style="{StaticResource HeaderLabel}" />
+            <Border Stroke="{StaticResource DimBorder}" BackgroundColor="{StaticResource CoffeeSurface}" Padding="20">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Guest Profile" FontSize="22" FontAttributes="Bold" />
+                    <Label Text="Loyalty, saved addresses, and account settings will be connected later." TextColor="{StaticResource MutedText}" FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+            <controls:GoldButton Text="BACK TO ORDER" Command="{Binding HomeCommand}" />
+        </VerticalStackLayout>
+        <controls:BottomNavigationBar Grid.Row="1" ActiveTab="Profile" />
+    </Grid>
+</ContentPage>

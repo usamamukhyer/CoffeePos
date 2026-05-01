@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Style TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource CoffeeBackground}" />
+        <Setter Property="Shell.NavBarIsVisible" Value="False" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="TextColor" Value="{StaticResource TextWhite}" />
+    </Style>
+
+    <Style x:Key="HeaderLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource GoldPrimary}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="HeroLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource GoldPrimary}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontFamily" Value="serif" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="AuthTitleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource GoldPrimary}" />
+        <Setter Property="FontSize" Value="27" />
+        <Setter Property="CharacterSpacing" Value="8" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="LinkTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource GoldPrimary}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="ValidationMessageStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="#FF8F74" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="SectionLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource TextWhite}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource TextWhite}" />
+        <Setter Property="PlaceholderColor" Value="#8C817A" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="ClearButtonVisibility" Value="WhileEditing" />
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{StaticResource TextWhite}" />
+        <Setter Property="PlaceholderColor" Value="#8C817A" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+</ResourceDictionary>

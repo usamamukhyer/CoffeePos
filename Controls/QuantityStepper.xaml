@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DBCafeteria.Controls.QuantityStepper"
+             x:Name="Root">
+    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+        <Button Text="-" WidthRequest="36" HeightRequest="36" CornerRadius="14" BackgroundColor="#3A2A22" TextColor="White" Command="{Binding DecrementCommand, Source={x:Reference Root}}" CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+        <Label Text="{Binding Quantity, Source={x:Reference Root}}" VerticalOptions="Center" FontAttributes="Bold" />
+        <Button Text="+" WidthRequest="36" HeightRequest="36" CornerRadius="14" BackgroundColor="{StaticResource GoldPrimary}" TextColor="#1B100B" Command="{Binding IncrementCommand, Source={x:Reference Root}}" CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+    </HorizontalStackLayout>
+</ContentView>

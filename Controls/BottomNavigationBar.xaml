@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DBCafeteria.Controls.BottomNavigationBar"
+             x:Name="Root"
+             BackgroundColor="White">
+    <Grid Padding="{OnPlatform Android='0,8,0,8', iOS='0,8,0,24', WinUI='0,8,0,8'}"
+          ColumnDefinitions="*,*,*,*"
+          HeightRequest="{OnPlatform Android=74, iOS=90, WinUI=74}">
+        <VerticalStackLayout Grid.Column="0" Spacing="1" HorizontalOptions="Center">
+            <Image Source="tab_order_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
+            <Label Text="Order" FontSize="11" TextColor="{Binding OrderColor, Source={x:Reference Root}}" />
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOrderTapped" />
+            </VerticalStackLayout.GestureRecognizers>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Column="1" Spacing="1" HorizontalOptions="Center">
+            <Image Source="tab_menu_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
+            <Label Text="Menu" FontSize="11" FontAttributes="{Binding MenuFont, Source={x:Reference Root}}" TextColor="{Binding MenuColor, Source={x:Reference Root}}" />
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnMenuTapped" />
+            </VerticalStackLayout.GestureRecognizers>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Column="2" Spacing="1" HorizontalOptions="Center">
+            <Image Source="tab_cart_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
+            <Label Text="{Binding CartText, Source={x:Reference Root}}" FontSize="11" FontAttributes="{Binding CartFont, Source={x:Reference Root}}" TextColor="{Binding CartColor, Source={x:Reference Root}}" />
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCartTapped" />
+            </VerticalStackLayout.GestureRecognizers>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Column="3" Spacing="1" HorizontalOptions="Center">
+            <Image Source="tab_profile_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
+            <Label Text="Profile" FontSize="11" TextColor="{Binding ProfileColor, Source={x:Reference Root}}" />
+            <VerticalStackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnProfileTapped" />
+            </VerticalStackLayout.GestureRecognizers>
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

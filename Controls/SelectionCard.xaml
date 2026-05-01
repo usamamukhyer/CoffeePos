@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DBCafeteria.Controls.SelectionCard"
+             x:Name="Root">
+    <Border x:Name="CardBorder"
+            HeightRequest="112"
+            Stroke="{StaticResource DimBorder}"
+            StrokeThickness="1.4"
+            BackgroundColor="{StaticResource CoffeeSurface}"
+            Padding="14">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="12" />
+        </Border.StrokeShape>
+        <Border.Triggers>
+            <DataTrigger TargetType="Border" Binding="{Binding IsSelected, Source={x:Reference Root}}" Value="True">
+                <Setter Property="Stroke" Value="{StaticResource GoldPrimary}" />
+            </DataTrigger>
+        </Border.Triggers>
+        <Grid RowDefinitions="*,Auto,Auto" RowSpacing="5">
+            <Image Grid.Row="0"
+                   Source="{Binding IconSource, Source={x:Reference Root}}"
+                   IsVisible="{Binding HasIconSource, Source={x:Reference Root}}"
+                   HeightRequest="30"
+                   WidthRequest="30"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End" />
+            <Label Text="{Binding Icon, Source={x:Reference Root}}"
+                   Grid.Row="0"
+                   IsVisible="{Binding HasTextIcon, Source={x:Reference Root}}"
+                   TextColor="{StaticResource GoldPrimary}"
+                   FontSize="27"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End" />
+            <Label Text="{Binding Title, Source={x:Reference Root}}" Grid.Row="1" FontAttributes="Bold" FontFamily="serif" FontSize="15" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Subtitle, Source={x:Reference Root}}" Grid.Row="2" TextColor="{StaticResource MutedText}" FontSize="10" HorizontalTextAlignment="Center" />
+        </Grid>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Command, Source={x:Reference Root}}" CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+        </Border.GestureRecognizers>
+    </Border>
+</ContentView>
