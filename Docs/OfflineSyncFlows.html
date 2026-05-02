@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DBCafeteria Offline Sync Flow Diagrams</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #100502;
+      --panel: #1a0d08;
+      --panel-2: #221006;
+      --gold: #d3a72a;
+      --text: #ffffff;
+      --muted: #b4aaa3;
+      --border: #3c281f;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    header {
+      padding: 24px 28px 12px;
+      background: #1f0b03;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      color: var(--gold);
+      font-size: 26px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 0 0 22px;
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    .note {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mermaid {
+      background: var(--panel-2);
+      border-radius: 8px;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DBCafeteria Offline Sync Flow Diagrams</h1>
+    <p>Mermaid diagrams for cache-first UI, local gift search, offline order queue, and backend persistence.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. App Start, Resume, Reconnect, Timer Sync</h2>
+      <p class="note">The UI starts immediately from SQLite. API sync is silent and only runs while the app is active.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[App starts or resumes] --> B[Initialize SQLite cache]
+    B --> C[Render screens from local SQLite]
+    C --> D{Sync trigger?}
+    D -->|App start| E[Start silent sync]
+    D -->|App resume| E
+    D -->|Internet reconnect| E
+    D -->|Active timer tick| E
+    E --> F{Internet available?}
+    F -->|No| G[Skip API calls]
+    F -->|Yes| H[Sync reference data]
+    H --> I[Sync pending order queue]
+    I --> J[Update SQLite quietly]
+    J --> K[Keep UI stable, no flicker]
+      </pre>
+    </section>
+
+    <section>
+      <h2>2. Menu And Catalog Cache-First Flow</h2>
+      <p class="note">Categories, products, branches, and customization data load from SQLite first, then refresh from API.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[User opens order/menu screen] --> B[Read SQLite cache]
+    B --> C{Cached rows exist?}
+    C -->|Yes| D[Show cached UI instantly]
+    C -->|No| E[Show empty/loading state]
+    D --> F[Start background API sync]
+    E --> F
+    F --> G{API reachable?}
+    G -->|No| H[Keep cached/local state]
+    G -->|Yes| I[Fetch categories, products, options, branches]
+    I --> J[Compare row version/signature]
+    J --> K{Changed?}
+    K -->|No| L[Do nothing]
+    K -->|Yes| M[Upsert SQLite row]
+    M --> N[Next screen reads updated cache]
+      </pre>
+    </section>
+
+    <section>
+      <h2>3. Gift Recipient Local Search Flow</h2>
+      <p class="note">Gift search never calls the API while typing. Recipient must be selected from local Clientes cache.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[User types recipient name] --> B{Length >= 2?}
+    B -->|No| C[Clear suggestions]
+    B -->|Yes| D[Search SQLite Customers table only]
+    D --> E{Matches found?}
+    E -->|Yes| F[Show instant suggestions]
+    E -->|No| G[No selectable recipient]
+    F --> H[User selects customer]
+    H --> I[Store IdClienteReceptor]
+    I --> J[Autofill name and phone]
+    J --> K[Disable phone field]
+    G --> L[User presses continue]
+    K --> M[User presses continue]
+    L --> N[Show: Please select an existing customer]
+    M --> O[Continue to category/menu flow]
+      </pre>
+    </section>
+
+    <section>
+      <h2>4. Customer Background Sync Flow</h2>
+      <p class="note">Clientes are synchronized from API into SQLite and updated only when the row signature changes.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[Silent sync starts] --> B[GET api/customers/sync]
+    B --> C{API success?}
+    C -->|No| D[Keep existing local Customers]
+    C -->|Yes| E[For each customer]
+    E --> F[Build version from Id, name, phone, email, guest, active]
+    F --> G{Local version same?}
+    G -->|Yes| H[Skip update]
+    G -->|No| I[Upsert Customers row]
+    I --> J[Gift search sees updated local data]
+    H --> J
+      </pre>
+    </section>
+
+    <section>
+      <h2>5. Place Order Flow</h2>
+      <p class="note">The same payment screen handles online, offline, and API-down cases while preserving duplicate safety.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[User taps PLACE ORDER] --> B[Build ApiOrderRequest]
+    B --> C[Attach ClientOrderId GUID]
+    C --> D{Network available?}
+    D -->|No| E[Save SyncQueue status PendingSync]
+    E --> F[Show offline saved message]
+    F --> G[Clear basket and navigate success]
+    D -->|Yes| H[POST orders/place-order]
+    H --> I{API result}
+    I -->|Success| J[Save local SyncQueue status Synced]
+    J --> K[Clear basket and navigate success]
+    I -->|Server down / 5xx / request failure| L[Save SyncQueue status PendingServer]
+    L --> M[Show maintenance saved message]
+    M --> G
+    I -->|Validation error / 4xx| N[Show error]
+    N --> O[Do not clear basket]
+      </pre>
+    </section>
+
+    <section>
+      <h2>6. Sync Queue Retry Flow</h2>
+      <p class="note">Pending orders retry on reconnect, resume, timer, and startup. ClientOrderId prevents duplicate SQL Server orders.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[Sync trigger fires] --> B{Internet available?}
+    B -->|No| C[Wait for next trigger]
+    B -->|Yes| D[Read SyncQueue PendingSync/PendingServer]
+    D --> E{Any pending orders?}
+    E -->|No| F[Finish silently]
+    E -->|Yes| G[Deserialize order payload]
+    G --> H[POST orders/place-order]
+    H --> I{Success?}
+    I -->|Yes| J[Mark queue row Synced]
+    I -->|No| K[Increment AttemptCount]
+    K --> L[Keep row pending with LastError]
+    J --> M[Process next pending order]
+    L --> M
+    M --> E
+      </pre>
+    </section>
+
+    <section>
+      <h2>7. Backend Idempotent Order Persistence</h2>
+      <p class="note">The backend uses existing Cafe.sql tables and stores the client idempotency marker in Pedidos.Ubicacion.</p>
+      <pre class="mermaid">
+flowchart TD
+    A[API receives CreateOrderRequest] --> B{ClientOrderId provided?}
+    B -->|Yes| C[Lookup Pedidos.Ubicacion = ClientOrderId marker]
+    B -->|No| E[Validate branch, pickup, gift]
+    C --> D{Existing order found?}
+    D -->|Yes| R[Return existing order response]
+    D -->|No| E
+    E --> F[Validate Gift recipient in Clientes]
+    F --> G[Price products and toppings from SQL Server]
+    G --> H[Create Pedidos]
+    H --> I[Create PedidosProductos]
+    I --> J[Create PedidosProductosToppings]
+    J --> K[Create PedidosPagos]
+    K --> L[FormaPago = Cash on Delivery]
+    L --> M[Estado = Pending]
+    M --> N{Order type Gift?}
+    N -->|Yes| O[Create Regalos with IdClienteReceptor]
+    N -->|No| P[Skip Regalos]
+    O --> Q[Return order success]
+    P --> Q
+      </pre>
+    </section>
+
+    <section>
+      <h2>8. Data Ownership Diagram</h2>
+      <p class="note">SQL Server remains the source of truth. SQLite is a local cache plus pending-order queue.</p>
+      <pre class="mermaid">
+flowchart LR
+    subgraph SQLServer[SQL Server Cafe.sql]
+      A[Clientes]
+      B[Clasificaciones]
+      C[SubClasificaciones]
+      D[Leches / TiposGranos / Toppings / Vasos]
+      E[Sucursales]
+      F[Pedidos]
+      G[PedidosPagos]
+      H[Regalos]
+    end
+
+    subgraph API[ASP.NET Core API]
+      I[Reference endpoints]
+      J[api/customers/sync]
+      K[orders/place-order]
+    end
+
+    subgraph SQLite[Mobile SQLite]
+      L[Categories]
+      M[Products]
+      N[Options]
+      O[Branches]
+      P[Customers]
+      Q[Customizations]
+      R[SyncQueue]
+    end
+
+    SQLServer --> API
+    I --> L
+    I --> M
+    I --> N
+    I --> O
+    J --> P
+    K --> F
+    K --> G
+    K --> H
+    R --> K
+      </pre>
+    </section>
+  </main>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "dark",
+      securityLevel: "loose",
+      flowchart: {
+        curve: "basis",
+        useMaxWidth: true
+      },
+      themeVariables: {
+        background: "#100502",
+        primaryColor: "#221006",
+        primaryTextColor: "#ffffff",
+        primaryBorderColor: "#d3a72a",
+        lineColor: "#d3a72a",
+        secondaryColor: "#1a0d08",
+        tertiaryColor: "#3c281f"
+      }
+    });
+  </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ public sealed class AuthService(CafeDbContext db, IPasswordHasher passwordHasher
     public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.EmailOrPhone) || string.IsNullOrWhiteSpace(request.Password))
-            throw new InvalidOperationException("Email/phone and password are required.");
+            throw new InvalidOperationException("Email/telefono y contrasena son obligatorios.");
 
         var normalized = request.EmailOrPhone.Trim();
         var phone = long.TryParse(new string(normalized.Where(char.IsDigit).ToArray()), out var parsedPhone) ? parsedPhone : (long?)null;
@@ -20,7 +20,7 @@ public sealed class AuthService(CafeDbContext db, IPasswordHasher passwordHasher
             x.Activo && !x.EsInvitado && (x.Email == normalized || (phone != null && x.Telefono == phone)), cancellationToken);
 
         if (cliente?.PasswordHash is null || !passwordHasher.Verify(request.Password, cliente.PasswordHash))
-            throw new UnauthorizedAccessException("Invalid credentials.");
+            throw new UnauthorizedAccessException("Credenciales invalidas.");
 
         return ToAuthResponse(cliente);
     }
@@ -28,23 +28,40 @@ public sealed class AuthService(CafeDbContext db, IPasswordHasher passwordHasher
     public async Task<AuthResponse> SignupAsync(SignupRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Name))
-            throw new InvalidOperationException("Name is required.");
+            throw new InvalidOperationException("El nombre es obligatorio.");
         if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.Phone))
-            throw new InvalidOperationException("Email or phone is required.");
+            throw new InvalidOperationException("El email o telefono es obligatorio.");
         if (string.IsNullOrWhiteSpace(request.Password))
-            throw new InvalidOperationException("Password is required.");
+            throw new InvalidOperationException("La contrasena es obligatoria.");
 
-        var email = string.IsNullOrWhiteSpace(request.Email) ? null : request.Email.Trim();
+        var name = request.Name.Trim();
+        var email = string.IsNullOrWhiteSpace(request.Email) ? null : request.Email.Trim().ToLowerInvariant();
         var phone = ParsePhone(request.Phone);
 
-        var exists = await db.Clientes.AnyAsync(x =>
-            !x.EsInvitado && ((email != null && x.Email == email) || (phone != null && x.Telefono == phone)), cancellationToken);
-        if (exists)
-            throw new InvalidOperationException("Customer already exists.");
+        if (email is not null)
+        {
+            var emailExists = await db.Clientes.AnyAsync(x =>
+                !x.EsInvitado && x.Email != null && x.Email.ToLower() == email, cancellationToken);
+            if (emailExists)
+                throw new InvalidOperationException("Este email ya esta registrado. Inicia sesion.");
+        }
+
+        if (phone is not null)
+        {
+            var phoneExists = await db.Clientes.AnyAsync(x =>
+                !x.EsInvitado && x.Telefono == phone, cancellationToken);
+            if (phoneExists)
+                throw new InvalidOperationException("Este telefono ya esta registrado. Inicia sesion.");
+        }
+
+        var nameExists = await db.Clientes.AnyAsync(x =>
+            !x.EsInvitado && x.Nombre != null && x.Nombre.ToLower() == name.ToLowerInvariant(), cancellationToken);
+        if (nameExists)
+            throw new InvalidOperationException("Este nombre ya esta registrado. Inicia sesion.");
 
         var cliente = new Cliente
         {
-            Nombre = request.Name.Trim(),
+            Nombre = name,
             Email = email,
             Telefono = phone,
             EsInvitado = false,
@@ -62,7 +79,7 @@ public sealed class AuthService(CafeDbContext db, IPasswordHasher passwordHasher
     {
         var cliente = new Cliente
         {
-            Nombre = string.IsNullOrWhiteSpace(request.Name) ? "Guest" : request.Name.Trim(),
+            Nombre = string.IsNullOrWhiteSpace(request.Name) ? "Invitado" : request.Name.Trim(),
             Telefono = ParsePhone(request.Phone),
             EsInvitado = true,
             FechaRegistro = DateTime.Now,
@@ -75,7 +92,7 @@ public sealed class AuthService(CafeDbContext db, IPasswordHasher passwordHasher
     }
 
     private AuthResponse ToAuthResponse(Cliente cliente) =>
-        new(cliente.Id, cliente.Nombre ?? "Guest", cliente.Email, cliente.Telefono?.ToString(), cliente.EsInvitado, tokenService.CreateAccessToken(cliente), tokenService.CreateRefreshToken());
+        new(cliente.Id, cliente.Nombre ?? "Invitado", cliente.Email, cliente.Telefono?.ToString(), cliente.EsInvitado, tokenService.CreateAccessToken(cliente), tokenService.CreateRefreshToken());
 
     private static long? ParsePhone(string? phone)
     {

@@ -8,6 +8,7 @@ namespace DBCafeteria.ViewModels;
 public sealed class ShopByCategoryViewModel : BaseViewModel
 {
     private readonly CafeApiClient _apiClient = ApiClientFactory.Create();
+    private readonly LocalMenuCacheService _cache = new();
     private string _errorMessage = string.Empty;
     private bool _isBusy;
 
@@ -22,6 +23,12 @@ public sealed class ShopByCategoryViewModel : BaseViewModel
         if (IsBusy || Categories.Count > 0)
             return;
 
+        var cachedCategories = await _cache.GetCategoriesAsync();
+        ReplaceCategories(cachedCategories);
+        _ = SyncCategoriesAsync();
+        if (cachedCategories.Count > 0)
+            return;
+
         try
         {
             IsBusy = true;
@@ -29,22 +36,13 @@ public sealed class ShopByCategoryViewModel : BaseViewModel
             OnPropertyChanged(nameof(HasError));
 
             var categories = await _apiClient.GetAsync<IReadOnlyList<ApiCategory>>("api/categories") ?? [];
-            Categories.Clear();
-            foreach (var category in categories)
-            {
-                Categories.Add(new CategoryModel
-                {
-                    Id = category.Id,
-                    Name = category.Name,
-                    Key = category.Key,
-                    Image = GetCategoryImage(category.Name)
-                });
-            }
+            await _cache.UpsertCategoriesAsync(categories);
+            ReplaceCategories(await _cache.GetCategoriesAsync());
             OnPropertyChanged(nameof(IsEmpty));
         }
         catch (Exception ex) when (ex is HttpRequestException or ApiException)
         {
-            ErrorMessage = "Unable to load menu. Please try again.";
+            ErrorMessage = "No se pudo cargar el menu. Intentalo de nuevo.";
             OnPropertyChanged(nameof(HasError));
             Categories.Clear();
             OnPropertyChanged(nameof(IsEmpty));
@@ -64,6 +62,26 @@ public sealed class ShopByCategoryViewModel : BaseViewModel
             await Shell.Current.GoToAsync(nameof(Views.OurMenuPage));
         }
     });
+
+    private async Task SyncCategoriesAsync()
+    {
+        try
+        {
+            var categories = await _apiClient.GetAsync<IReadOnlyList<ApiCategory>>("api/categories") ?? [];
+            await _cache.UpsertCategoriesAsync(categories);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or ApiException)
+        {
+        }
+    }
+
+    private void ReplaceCategories(IEnumerable<CategoryModel> categories)
+    {
+        Categories.Clear();
+        foreach (var category in categories)
+            Categories.Add(category);
+        OnPropertyChanged(nameof(IsEmpty));
+    }
 
     private static string GetCategoryImage(string name)
     {

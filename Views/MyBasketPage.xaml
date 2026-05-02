@@ -7,7 +7,7 @@
              BackgroundColor="{StaticResource CoffeeBackground}">
     <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
         <VerticalStackLayout Grid.Row="0" Spacing="0">
-            <Label Text="MY BASKET" Style="{StaticResource HeaderLabel}" Padding="10,14" BackgroundColor="{StaticResource CoffeeHeader}" />
+            <Label Text="MI CANASTA" Style="{StaticResource HeaderLabel}" Padding="10,14" BackgroundColor="{StaticResource CoffeeHeader}" />
             <CollectionView ItemsSource="{Binding BasketItems}" SelectionMode="None" Margin="8,14,8,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -30,11 +30,11 @@
         </VerticalStackLayout>
         <Grid Grid.Row="1" Padding="14,12" BackgroundColor="{StaticResource CoffeeSurface}" ColumnDefinitions="*,138">
             <VerticalStackLayout>
-                <Label Text="TOTAL AMOUNT" TextColor="{StaticResource MutedText}" FontSize="11" />
+                <Label Text="TOTAL" TextColor="{StaticResource MutedText}" FontSize="11" />
                 <Label Text="{Binding TotalAmountText}" FontSize="24" FontAttributes="Bold" />
                 <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" />
             </VerticalStackLayout>
-            <controls:GoldButton Grid.Column="1" Text="CHECKOUT" Command="{Binding CheckoutCommand}" />
+            <controls:GoldButton Grid.Column="1" Text="FINALIZAR" Command="{Binding CheckoutCommand}" />
         </Grid>
         <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Cart" />
     </Grid>

@@ -5,6 +5,7 @@
        xmlns:views="clr-namespace:DBCafeteria.Views"
        Shell.NavBarIsVisible="False"
        FlyoutBehavior="Disabled">
+    <ShellContent Route="Startup" ContentTemplate="{DataTemplate views:StartupPage}" />
     <ShellContent Route="AuthLanding" ContentTemplate="{DataTemplate views:AuthLandingPage}" />
     <ShellContent Route="OrderSetup" ContentTemplate="{DataTemplate views:OrderSetupPage}" />
 </Shell>

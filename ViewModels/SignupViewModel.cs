@@ -64,7 +64,7 @@ public sealed class SignupViewModel : BaseViewModel
 
                 if (response is null)
                 {
-                    SetValidation("Account creation failed. Please try again.");
+                    SetValidation("No se pudo crear la cuenta. Intentalo de nuevo.");
                     return;
                 }
 
@@ -78,7 +78,7 @@ public sealed class SignupViewModel : BaseViewModel
             }
             catch (HttpRequestException)
             {
-                SetValidation("API is not reachable. Please run the API on http://localhost:5126.");
+                SetValidation(NetworkErrorMessages.ApiUnavailable("Registro"));
             }
         });
     }
@@ -86,16 +86,16 @@ public sealed class SignupViewModel : BaseViewModel
     private string Validate()
     {
         if (string.IsNullOrWhiteSpace(FullName))
-            return "Full name is required.";
+            return "El nombre completo es obligatorio.";
 
         if (string.IsNullOrWhiteSpace(Email) && string.IsNullOrWhiteSpace(PhoneNumber))
-            return "Email or phone number is required.";
+            return "El email o telefono es obligatorio.";
 
         if (string.IsNullOrWhiteSpace(Password))
-            return "Password is required.";
+            return "La contrasena es obligatoria.";
 
         if (Password != ConfirmPassword)
-            return "Confirm password must match password.";
+            return "La confirmacion debe coincidir con la contrasena.";
 
         return string.Empty;
     }

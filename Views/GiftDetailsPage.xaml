@@ -17,10 +17,10 @@
                             <TapGestureRecognizer Command="{Binding BackCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Grid.Column="1" Text="Gift Details" Style="{StaticResource HeaderLabel}" />
+                    <Label Grid.Column="1" Text="Detalles del regalo" Style="{StaticResource HeaderLabel}" />
                 </Grid>
 
-                <Label Text="GIFT PREVIEW"
+                <Label Text="VISTA PREVIA"
                        FontSize="12"
                        CharacterSpacing="2"
                        HorizontalTextAlignment="Center"
@@ -34,7 +34,7 @@
                     </Border.StrokeShape>
                     <Grid ColumnDefinitions="*,64" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
                         <Label Grid.ColumnSpan="2"
-                               Text="A SPECIAL TREAT"
+                               Text="UN DETALLE ESPECIAL"
                                Style="{StaticResource HeroLabel}"
                                FontSize="20"
                                Margin="0,10,0,12" />
@@ -59,12 +59,12 @@
                     </Grid>
                 </Border>
 
-                <controls:SectionTitle Text="RECIPIENT NAME" />
+                <controls:SectionTitle Text="NOMBRE DEL DESTINATARIO" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
                     </Border.StrokeShape>
-                    <Entry Placeholder="Search recipient by name..."
+                    <Entry Placeholder="Buscar destinatario por nombre..."
                            Text="{Binding RecipientSearchText}"
                            ReturnCommand="{Binding SearchRecipientCommand}" />
                 </Border>
@@ -94,7 +94,7 @@
                                            FontSize="12" />
                                     <Button Grid.RowSpan="2"
                                             Grid.Column="1"
-                                            Text="SELECT"
+                                            Text="ELEGIR"
                                             FontSize="11"
                                             Padding="12,0"
                                             HeightRequest="34"
@@ -114,7 +114,7 @@
                        IsVisible="{Binding HasError}"
                        HorizontalTextAlignment="Start" />
 
-                <controls:SectionTitle Text="RECIPIENT PHONE" />
+                <controls:SectionTitle Text="TELEFONO DEL DESTINATARIO" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
@@ -125,12 +125,12 @@
                            IsReadOnly="{Binding IsRecipientPhoneReadOnly}" />
                 </Border>
 
-                <controls:SectionTitle Text="PERSONAL MESSAGE" />
+                <controls:SectionTitle Text="MENSAJE PERSONAL" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
                     </Border.StrokeShape>
-                    <Editor Placeholder="Write a short note..."
+                    <Editor Placeholder="Escribe una nota breve..."
                             AutoSize="TextChanges"
                             HeightRequest="88"
                             Text="{Binding PersonalMessage}" />
@@ -141,7 +141,7 @@
         <Grid Grid.Row="1"
               Padding="22,10,22,14"
               BackgroundColor="{StaticResource CoffeeBackground}">
-            <controls:GoldButton Text="CONFIRM &amp; CHOOSE COFFEE" Command="{Binding ConfirmGiftCommand}" />
+            <controls:GoldButton Text="CONFIRMAR Y ELEGIR CAFE" Command="{Binding ConfirmGiftCommand}" />
         </Grid>
         <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Order" />
     </Grid>

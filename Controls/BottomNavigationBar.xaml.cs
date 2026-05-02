@@ -16,7 +16,7 @@ public partial class BottomNavigationBar : ContentView
     }
 
     public string ActiveTab { get => (string)GetValue(ActiveTabProperty); set => SetValue(ActiveTabProperty, value); }
-    public string CartText => OrderSessionService.Instance.BasketCount > 0 ? $"Cart ({OrderSessionService.Instance.BasketCount})" : "Cart";
+    public string CartText => OrderSessionService.Instance.BasketCount > 0 ? $"Canasta ({OrderSessionService.Instance.BasketCount})" : "Canasta";
     public Color OrderColor => ActiveTab == "Order" ? Active : Inactive;
     public Color MenuColor => ActiveTab == "Menu" ? Active : Inactive;
     public Color CartColor => ActiveTab == "Cart" ? Active : Inactive;

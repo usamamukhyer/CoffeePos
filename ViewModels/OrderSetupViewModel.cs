@@ -9,6 +9,7 @@ public sealed class OrderSetupViewModel : BaseViewModel
 {
     private readonly OrderSessionService _session = OrderSessionService.Instance;
     private readonly BranchApiService _branchApiService = new();
+    private readonly LocalBranchCacheService _branchCacheService = new();
     private BranchModel? _selectedBranch;
     private OrderType _orderType = OrderSessionService.Instance.OrderType;
     private PickupType _pickupType = OrderSessionService.Instance.PickupType;
@@ -118,18 +119,18 @@ public sealed class OrderSetupViewModel : BaseViewModel
             IsBusy = true;
             SetError(string.Empty);
 
-            var branches = await _branchApiService.GetBranchesAsync();
-            Branches.Clear();
-            foreach (var branch in branches)
-                Branches.Add(branch);
+            var cachedBranches = await _branchCacheService.GetBranchesAsync();
+            ReplaceBranches(cachedBranches);
+            _ = SyncBranchesAsync();
+            if (cachedBranches.Count > 0)
+                return;
 
-            SelectedBranch = _session.BranchId is int branchId
-                ? Branches.FirstOrDefault(branch => branch.Id == branchId) ?? Branches.FirstOrDefault()
-                : Branches.FirstOrDefault();
+            var branches = await _branchApiService.GetBranchesAsync();
+            ReplaceBranches(branches);
         }
         catch (HttpRequestException)
         {
-            SetError("Branches could not be loaded. Please run the API on http://localhost:5126.");
+            SetError(NetworkErrorMessages.ApiUnavailable("Sucursales"));
         }
         catch (ApiException ex)
         {
@@ -141,11 +142,34 @@ public sealed class OrderSetupViewModel : BaseViewModel
         }
     }
 
+    private async Task SyncBranchesAsync()
+    {
+        try
+        {
+            var branches = await _branchApiService.GetBranchesAsync();
+            await _branchCacheService.UpsertBranchesAsync(branches.Select(branch => new ApiBranch(branch.Id, branch.Name, branch.Address)));
+        }
+        catch (Exception ex) when (ex is HttpRequestException or ApiException)
+        {
+        }
+    }
+
+    private void ReplaceBranches(IEnumerable<BranchModel> branches)
+    {
+        Branches.Clear();
+        foreach (var branch in branches)
+            Branches.Add(branch);
+
+        SelectedBranch = _session.BranchId is int branchId
+            ? Branches.FirstOrDefault(branch => branch.Id == branchId) ?? Branches.FirstOrDefault()
+            : Branches.FirstOrDefault();
+    }
+
     private async Task ContinueAsync()
     {
         if (SelectedBranch is null)
         {
-            SetError("Please select a branch.");
+            SetError("Selecciona una sucursal.");
             return;
         }
 
@@ -154,13 +178,13 @@ public sealed class OrderSetupViewModel : BaseViewModel
             ApplyPickupDateTime();
             if (_session.PickupDateTime is null)
             {
-                SetError("Please select a pickup date and time.");
+                SetError("Selecciona fecha y hora de recoleccion.");
                 return;
             }
 
             if (_session.PickupDateTime <= DateTime.Now)
             {
-                SetError("Pickup date and time must be in the future.");
+                SetError("La fecha y hora de recoleccion debe ser futura.");
                 return;
             }
         }

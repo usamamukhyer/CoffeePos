@@ -7,10 +7,10 @@
     <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
         <ScrollView Grid.Row="0" BackgroundColor="{StaticResource CoffeeBackground}">
             <VerticalStackLayout Padding="28,16,28,20" Spacing="20">
-                <Label Text="Order Setup" Style="{StaticResource HeaderLabel}" />
-                <Label Text="START YOUR ORDER" Style="{StaticResource HeroLabel}" Margin="0,12,0,4" />
+                <Label Text="Configurar pedido" Style="{StaticResource HeaderLabel}" />
+                <Label Text="INICIA TU PEDIDO" Style="{StaticResource HeroLabel}" Margin="0,12,0,4" />
 
-                <controls:SectionTitle Text="SELECT BRANCH" />
+                <controls:SectionTitle Text="SELECCIONA SUCURSAL" />
                 <Border Stroke="{StaticResource GoldBorder}"
                         StrokeThickness="1.4"
                         Padding="14,2"
@@ -18,14 +18,8 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
                     </Border.StrokeShape>
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" HeightRequest="48">
-                        <Label Text="v"
-                               TextColor="{StaticResource GoldPrimary}"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center" />
-                        <Picker Grid.Column="1"
-                                Title="Choose branch"
+                    <Grid HeightRequest="48">
+                        <Picker Title="Elige sucursal"
                                 ItemsSource="{Binding Branches}"
                                 ItemDisplayBinding="{Binding Name}"
                                 SelectedItem="{Binding SelectedBranch}"
@@ -40,31 +34,31 @@
                        IsVisible="{Binding HasError}"
                        HorizontalTextAlignment="Start" />
 
-                <controls:SectionTitle Text="WHO IS THIS FOR?" />
+                <controls:SectionTitle Text="PARA QUIEN ES?" />
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
-                    <controls:SelectionCard Title="FOR ME"
+                    <controls:SelectionCard Title="PARA MI"
                                             IconSource="icon_person_gold.png"
                                             IsSelected="{Binding IsForMeSelected}"
                                             Command="{Binding SelectOrderTypeCommand}"
                                             CommandParameter="ForMe" />
                     <controls:SelectionCard Grid.Column="1"
-                                            Title="SEND GIFT"
+                                            Title="ENVIAR REGALO"
                                             IconSource="icon_gift_gold.png"
                                             IsSelected="{Binding IsGiftSelected}"
                                             Command="{Binding SelectOrderTypeCommand}"
                                             CommandParameter="Gift" />
                 </Grid>
 
-                <controls:SectionTitle Text="PICKUP TIMING" />
+                <controls:SectionTitle Text="HORARIO DE RECOLECCION" />
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
-                    <controls:SelectionCard Title="NOW"
-                                            Subtitle="Ready in 10m"
+                    <controls:SelectionCard Title="AHORA"
+                                            Subtitle="Listo en 10m"
                                             IsSelected="{Binding IsNowSelected}"
                                             Command="{Binding SelectPickupCommand}"
                                             CommandParameter="Now" />
                     <controls:SelectionCard Grid.Column="1"
-                                            Title="PRE-ORDER"
-                                            Subtitle="Pick a time"
+                                            Title="PROGRAMAR"
+                                            Subtitle="Elige hora"
                                             IsSelected="{Binding IsPreOrderSelected}"
                                             Command="{Binding SelectPickupCommand}"
                                             CommandParameter="PreOrder" />
@@ -80,14 +74,14 @@
                     </Border.StrokeShape>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6">
-                            <Label Text="DATE" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
+                            <Label Text="FECHA" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
                             <DatePicker Date="{Binding PickupDate}"
                                         MinimumDate="{Binding MinimumPickupDate}"
                                         TextColor="{StaticResource TextWhite}"
                                         BackgroundColor="Transparent" />
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
-                            <Label Text="TIME" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
+                            <Label Text="HORA" Style="{StaticResource SectionLabel}" TextColor="{StaticResource MutedText}" />
                             <TimePicker Time="{Binding PickupTime}"
                                         TextColor="{StaticResource TextWhite}"
                                         BackgroundColor="Transparent" />
@@ -100,7 +94,7 @@
         <Grid Grid.Row="1"
               Padding="28,10,28,14"
               BackgroundColor="{StaticResource CoffeeBackground}">
-            <controls:GoldButton Text="CONTINUE" Command="{Binding ContinueCommand}" />
+            <controls:GoldButton Text="CONTINUAR" Command="{Binding ContinueCommand}" />
         </Grid>
         <controls:BottomNavigationBar Grid.Row="2" ActiveTab="Order" />
     </Grid>

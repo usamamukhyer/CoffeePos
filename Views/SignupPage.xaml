@@ -13,56 +13,56 @@
                             <TapGestureRecognizer Command="{Binding BackCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Grid.Column="1" Text="Create Account" Style="{StaticResource HeaderLabel}" />
+                    <Label Grid.Column="1" Text="Crear cuenta" Style="{StaticResource HeaderLabel}" />
                 </Grid>
 
                 <VerticalStackLayout Spacing="8" Margin="0,24,0,14">
-                    <Label Text="COFFEE" TextColor="{StaticResource GoldPrimary}" FontSize="14" CharacterSpacing="5" HorizontalTextAlignment="Center" />
-                    <Label Text="JOIN THE CLUB" Style="{StaticResource HeroLabel}" FontSize="23" />
-                    <Label Text="Create an account for seasonal loyalty later." TextColor="{StaticResource MutedText}" FontSize="13" HorizontalTextAlignment="Center" />
+                    <Label Text="CAFE" TextColor="{StaticResource GoldPrimary}" FontSize="14" CharacterSpacing="5" HorizontalTextAlignment="Center" />
+                    <Label Text="UNETE AL CLUB" Style="{StaticResource HeroLabel}" FontSize="23" />
+                    <Label Text="Crea una cuenta para guardar tus pedidos." TextColor="{StaticResource MutedText}" FontSize="13" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
 
-                <Label Text="FULL NAME" Style="{StaticResource SectionLabel}" />
+                <Label Text="NOMBRE COMPLETO" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Your name" Text="{Binding FullName}" />
+                    <Entry Placeholder="Tu nombre" Text="{Binding FullName}" />
                 </Border>
 
                 <Label Text="EMAIL" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Email address" Keyboard="Email" Text="{Binding Email}" />
+                    <Entry Placeholder="Correo electronico" Keyboard="Email" Text="{Binding Email}" />
                 </Border>
 
-                <Label Text="PHONE NUMBER" Style="{StaticResource SectionLabel}" />
+                <Label Text="TELEFONO" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
                     <Entry Placeholder="+1..." Keyboard="Telephone" Text="{Binding PhoneNumber}" />
                 </Border>
 
-                <Label Text="PASSWORD" Style="{StaticResource SectionLabel}" />
+                <Label Text="CONTRASENA" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+                    <Entry Placeholder="Contrasena" IsPassword="True" Text="{Binding Password}" />
                 </Border>
 
-                <Label Text="CONFIRM PASSWORD" Style="{StaticResource SectionLabel}" />
+                <Label Text="CONFIRMAR CONTRASENA" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Confirm password" IsPassword="True" Text="{Binding ConfirmPassword}" />
+                    <Entry Placeholder="Confirmar contrasena" IsPassword="True" Text="{Binding ConfirmPassword}" />
                 </Border>
 
                 <Label Text="{Binding ValidationMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasValidationMessage}" />
 
-                <controls:GoldButton Text="CREATE ACCOUNT" Command="{Binding CreateAccountCommand}" Margin="0,8,0,0" />
+                <controls:GoldButton Text="CREAR CUENTA" Command="{Binding CreateAccountCommand}" Margin="0,8,0,0" />
 
-                <Label Text="Already have an account? Login" Style="{StaticResource LinkTextStyle}" Margin="0,8,0,0">
+                <Label Text="Ya tienes cuenta? Inicia sesion" Style="{StaticResource LinkTextStyle}" Margin="0,8,0,0">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LoginCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="Continue as Guest" Style="{StaticResource LinkTextStyle}" TextColor="{StaticResource MutedText}">
+                <Label Text="Continuar como invitado" Style="{StaticResource LinkTextStyle}" TextColor="{StaticResource MutedText}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GuestCommand}" />
                     </Label.GestureRecognizers>

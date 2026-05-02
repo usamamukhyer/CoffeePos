@@ -13,44 +13,44 @@
                             <TapGestureRecognizer Command="{Binding BackCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Grid.Column="1" Text="Login" Style="{StaticResource HeaderLabel}" />
+                    <Label Grid.Column="1" Text="Iniciar sesion" Style="{StaticResource HeaderLabel}" />
                 </Grid>
 
                 <VerticalStackLayout Spacing="8" Margin="0,34,0,20">
-                    <Label Text="COFFEE" TextColor="{StaticResource GoldPrimary}" FontSize="14" CharacterSpacing="5" HorizontalTextAlignment="Center" />
-                    <Label Text="WELCOME BACK" Style="{StaticResource HeroLabel}" FontSize="23" />
-                    <Label Text="Login to access seasonal loyalty" TextColor="{StaticResource MutedText}" FontSize="13" HorizontalTextAlignment="Center" />
+                    <Label Text="CAFE" TextColor="{StaticResource GoldPrimary}" FontSize="14" CharacterSpacing="5" HorizontalTextAlignment="Center" />
+                    <Label Text="BIENVENIDO" Style="{StaticResource HeroLabel}" FontSize="23" />
+                    <Label Text="Inicia sesion para acceder a beneficios" TextColor="{StaticResource MutedText}" FontSize="13" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
 
-                <Label Text="EMAIL OR PHONE" Style="{StaticResource SectionLabel}" />
+                <Label Text="EMAIL O TELEFONO" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Email or phone number" Keyboard="Email" Text="{Binding EmailOrPhone}" />
+                    <Entry Placeholder="Email o telefono" Keyboard="Email" Text="{Binding EmailOrPhone}" />
                 </Border>
 
-                <Label Text="PASSWORD" Style="{StaticResource SectionLabel}" />
+                <Label Text="CONTRASENA" Style="{StaticResource SectionLabel}" />
                 <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                    <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+                    <Entry Placeholder="Contrasena" IsPassword="True" Text="{Binding Password}" />
                 </Border>
 
                 <Label Text="{Binding ValidationMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasValidationMessage}" />
 
-                <controls:GoldButton Text="LOGIN" Command="{Binding LoginCommand}" Margin="0,8,0,0" />
+                <controls:GoldButton Text="INICIAR SESION" Command="{Binding LoginCommand}" Margin="0,8,0,0" />
 
-                <Label Text="Forgot Password?" Style="{StaticResource LinkTextStyle}" Margin="0,4,0,0">
+                <Label Text="Olvidaste tu contrasena?" Style="{StaticResource LinkTextStyle}" Margin="0,4,0,0">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="Don't have an account? Sign Up" Style="{StaticResource LinkTextStyle}">
+                <Label Text="No tienes cuenta? Registrate" Style="{StaticResource LinkTextStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SignupCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="Continue as Guest" Style="{StaticResource LinkTextStyle}" TextColor="{StaticResource MutedText}" Margin="0,10,0,0">
+                <Label Text="Continuar como invitado" Style="{StaticResource LinkTextStyle}" TextColor="{StaticResource MutedText}" Margin="0,10,0,0">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GuestCommand}" />
                     </Label.GestureRecognizers>

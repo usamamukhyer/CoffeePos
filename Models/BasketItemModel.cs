@@ -15,7 +15,7 @@ public sealed class BasketItemModel : INotifyPropertyChanged
     public int? MilkId { get; set; }
     public int? BeanTypeId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Temperature { get; set; } = "Hot";
+    public string Temperature { get; set; } = "Caliente";
     public string Size { get; set; } = string.Empty;
     public string Milk { get; set; } = string.Empty;
     public decimal Price { get; set; }

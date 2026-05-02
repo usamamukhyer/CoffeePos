@@ -29,6 +29,17 @@ public sealed class OrderService(CafeDbContext db, IGiftService giftService) : I
 
     public async Task<CreateOrderResponse> CreateOrderAsync(CreateOrderRequest request, CancellationToken cancellationToken)
     {
+        var clientOrderMarker = ToClientOrderMarker(request.ClientOrderId);
+        if (clientOrderMarker is not null)
+        {
+            var existing = await db.Pedidos
+                .AsNoTracking()
+                .Include(order => order.Regalo)
+                .FirstOrDefaultAsync(order => order.Ubicacion == clientOrderMarker, cancellationToken);
+            if (existing is not null)
+                return new CreateOrderResponse(existing.Id, existing.NoPedido, existing.Total, existing.Regalo?.CodigoRegalo);
+        }
+
         if (request.BranchId <= 0)
             throw new InvalidOperationException("BranchId is required.");
 
@@ -85,7 +96,8 @@ public sealed class OrderService(CafeDbContext db, IGiftService giftService) : I
             TipoPedido = request.OrderType,
             TipoPickup = pickupType.Equals("PreOrder", StringComparison.OrdinalIgnoreCase) ? "PreOrder" : "Now",
             FechaPickup = pickupType.Equals("PreOrder", StringComparison.OrdinalIgnoreCase) ? request.PickupDateTime : null,
-            IdSucursal = request.BranchId
+            IdSucursal = request.BranchId,
+            Ubicacion = clientOrderMarker
         };
 
         foreach (var item in pricedItems)
@@ -152,6 +164,17 @@ public sealed class OrderService(CafeDbContext db, IGiftService giftService) : I
         }
 
         return new CreateOrderResponse(pedido.Id, pedido.NoPedido, pedido.Total, giftCode);
+    }
+
+    private static string? ToClientOrderMarker(string? clientOrderId)
+    {
+        if (string.IsNullOrWhiteSpace(clientOrderId))
+            return null;
+
+        var trimmed = clientOrderId.Trim();
+        return trimmed.StartsWith("ClientOrderId:", StringComparison.OrdinalIgnoreCase)
+            ? trimmed
+            : $"ClientOrderId:{trimmed}";
     }
 
     private async Task<int> ResolvePaymentUserIdAsync(int requestedUserId, CancellationToken cancellationToken)

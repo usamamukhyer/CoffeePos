@@ -8,14 +8,14 @@ namespace DBCafeteria.ViewModels;
 public sealed class GiftDetailsViewModel : BaseViewModel
 {
     private readonly OrderSessionService _session = OrderSessionService.Instance;
-    private readonly CustomerApiService _customerApiService = new();
+    private readonly LocalCustomerCacheService _customerCacheService = new();
     private CancellationTokenSource? _searchDebounceCts;
     private CustomerSearchResultModel? _selectedRecipient;
     private string _recipientSearchText = OrderSessionService.Instance.GiftRecipientName;
     private string _recipientPhone = OrderSessionService.Instance.GiftRecipientPhone;
     private string _personalMessage = OrderSessionService.Instance.GiftMessage;
     private string _errorMessage = string.Empty;
-    private bool _isRecipientPhoneReadOnly = OrderSessionService.Instance.GiftRecipientCustomerId.HasValue;
+    private bool _isRecipientPhoneReadOnly = true;
     private bool _isBusy;
     private bool _isSelectingRecipient;
 
@@ -83,8 +83,8 @@ public sealed class GiftDetailsViewModel : BaseViewModel
     public bool HasError => !string.IsNullOrWhiteSpace(ErrorMessage);
     public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
     public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }
-    public string PreviewRecipientName => string.IsNullOrWhiteSpace(RecipientSearchText) ? "Recipient Name" : RecipientSearchText;
-    public string PreviewMessage => string.IsNullOrWhiteSpace(PersonalMessage) ? "Your message will appear here..." : PersonalMessage;
+    public string PreviewRecipientName => string.IsNullOrWhiteSpace(RecipientSearchText) ? "Nombre del destinatario" : RecipientSearchText;
+    public string PreviewMessage => string.IsNullOrWhiteSpace(PersonalMessage) ? "Tu mensaje aparecera aqui..." : PersonalMessage;
 
     public ICommand SearchRecipientCommand => new AsyncCommand(() => SearchRecipientAsync(RecipientSearchText));
     public ICommand SelectRecipientCommand => new RelayCommand(SelectRecipient);
@@ -121,19 +121,15 @@ public sealed class GiftDetailsViewModel : BaseViewModel
         {
             IsBusy = true;
             SetError(string.Empty);
-            var customers = await _customerApiService.SearchCustomersAsync(query, cancellationToken);
+            var customers = await _customerCacheService.SearchCustomersAsync(query, _session.CustomerId, cancellationToken);
             foreach (var customer in customers)
                 CustomerSuggestions.Add(customer);
 
             OnPropertyChanged(nameof(HasSuggestions));
         }
-        catch (HttpRequestException)
+        catch (Exception)
         {
-            SetError("Customer search is unavailable. Please run the API on http://localhost:5126.");
-        }
-        catch (ApiException ex)
-        {
-            SetError(ex.Message);
+            SetError("No se pudo buscar clientes guardados.");
         }
         finally
         {
@@ -145,6 +141,12 @@ public sealed class GiftDetailsViewModel : BaseViewModel
     {
         if (value is not CustomerSearchResultModel customer)
             return;
+
+        if (_session.CustomerId == customer.Id)
+        {
+            SetError("Selecciona a otra persona para enviar el regalo.");
+            return;
+        }
 
         _isSelectingRecipient = true;
         SelectedRecipient = customer;
@@ -165,7 +167,13 @@ public sealed class GiftDetailsViewModel : BaseViewModel
     {
         if (SelectedRecipient is null && _session.GiftRecipientCustomerId is null)
         {
-            SetError("Please select an existing customer.");
+            SetError("Selecciona un cliente existente.");
+            return;
+        }
+
+        if (_session.GiftRecipientCustomerId == _session.CustomerId)
+        {
+            SetError("Selecciona a otra persona para enviar el regalo.");
             return;
         }
 
@@ -188,7 +196,7 @@ public sealed class GiftDetailsViewModel : BaseViewModel
         _session.GiftRecipientName = RecipientSearchText;
         _session.GiftRecipientPhone = string.Empty;
         RecipientPhone = string.Empty;
-        IsRecipientPhoneReadOnly = false;
+        IsRecipientPhoneReadOnly = true;
     }
 
     private void SetError(string message)

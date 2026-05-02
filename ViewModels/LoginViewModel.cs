@@ -25,7 +25,7 @@ public sealed class LoginViewModel : BaseViewModel
     {
         BackCommand = new AsyncCommand(async () => await Shell.Current.GoToAsync("//AuthLanding"));
         SignupCommand = new AsyncCommand(async () => await Shell.Current.GoToAsync(nameof(Views.SignupPage)));
-        ForgotPasswordCommand = new AsyncCommand(async () => await Shell.Current.DisplayAlertAsync("Forgot Password", "Password reset will be connected later.", "OK"));
+        ForgotPasswordCommand = new AsyncCommand(async () => await Shell.Current.DisplayAlertAsync("Recuperar contrasena", "La recuperacion de contrasena se conectara mas adelante.", "OK"));
         GuestCommand = new AsyncCommand(async () =>
         {
             try
@@ -47,7 +47,7 @@ public sealed class LoginViewModel : BaseViewModel
         {
             if (string.IsNullOrWhiteSpace(EmailOrPhone) || string.IsNullOrWhiteSpace(Password))
             {
-                SetValidation("Please enter your email or phone and password.");
+                SetValidation("Ingresa tu email o telefono y contrasena.");
                 return;
             }
 
@@ -59,7 +59,7 @@ public sealed class LoginViewModel : BaseViewModel
 
                 if (response is null)
                 {
-                    SetValidation("Login failed. Please try again.");
+                    SetValidation("No se pudo iniciar sesion. Intentalo de nuevo.");
                     return;
                 }
 
@@ -73,7 +73,7 @@ public sealed class LoginViewModel : BaseViewModel
             }
             catch (HttpRequestException)
             {
-                SetValidation("API is not reachable. Please run the API on http://localhost:5126.");
+                SetValidation(NetworkErrorMessages.ApiUnavailable("Inicio de sesion"));
             }
         });
     }

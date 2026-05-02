@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DBCafeteria.Views.StartupPage"
+             BackgroundColor="{StaticResource CoffeeBackground}">
+    <Grid Padding="32"
+          RowDefinitions="*,Auto,Auto,*"
+          RowSpacing="22"
+          BackgroundColor="{StaticResource CoffeeBackground}">
+        <Grid Grid.Row="1"
+              x:Name="CupMark"
+              WidthRequest="96"
+              HeightRequest="96"
+              HorizontalOptions="Center">
+            <Border Stroke="{StaticResource GoldBorder}"
+                    StrokeThickness="2"
+                    BackgroundColor="{StaticResource CoffeeSurfaceAlt}"
+                    WidthRequest="72"
+                    HeightRequest="72"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="36" />
+                </Border.StrokeShape>
+                <Label Text="DB"
+                       TextColor="{StaticResource GoldBright}"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="22"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+            </Border>
+            <ActivityIndicator x:Name="BusyRing"
+                               IsRunning="True"
+                               Color="{StaticResource GoldPrimary}"
+                               WidthRequest="96"
+                               HeightRequest="96" />
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="8">
+            <Label Text="Caffemoria"
+                   TextColor="{StaticResource GoldPrimary}"
+                   FontFamily="OpenSansSemibold"
+                   FontSize="24"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Preparando tu pedido"
+                   TextColor="{StaticResource MutedText}"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

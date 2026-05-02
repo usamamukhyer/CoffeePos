@@ -24,7 +24,7 @@ public sealed class GuestDetailsViewModel : BaseViewModel
     {
         if (string.IsNullOrWhiteSpace(GuestName))
         {
-            SetError("Please enter your name to continue as guest.");
+            SetError("Ingresa tu nombre para continuar como invitado.");
             return;
         }
 

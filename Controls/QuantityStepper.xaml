@@ -3,9 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DBCafeteria.Controls.QuantityStepper"
              x:Name="Root">
-    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-        <Button Text="-" WidthRequest="36" HeightRequest="36" CornerRadius="14" BackgroundColor="#3A2A22" TextColor="White" Command="{Binding DecrementCommand, Source={x:Reference Root}}" CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
-        <Label Text="{Binding Quantity, Source={x:Reference Root}}" VerticalOptions="Center" FontAttributes="Bold" />
-        <Button Text="+" WidthRequest="36" HeightRequest="36" CornerRadius="14" BackgroundColor="{StaticResource GoldPrimary}" TextColor="#1B100B" Command="{Binding IncrementCommand, Source={x:Reference Root}}" CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
-    </HorizontalStackLayout>
+    <Grid ColumnDefinitions="42,32,42"
+          ColumnSpacing="8"
+          HeightRequest="42"
+          VerticalOptions="Center">
+        <Button Text="-"
+                WidthRequest="42"
+                HeightRequest="42"
+                MinimumWidthRequest="42"
+                MinimumHeightRequest="42"
+                Padding="0"
+                CornerRadius="18"
+                FontSize="18"
+                FontAttributes="Bold"
+                BackgroundColor="#3A2A22"
+                TextColor="White"
+                Command="{Binding DecrementCommand, Source={x:Reference Root}}"
+                CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+        <Label Grid.Column="1"
+               Text="{Binding Quantity, Source={x:Reference Root}}"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Center"
+               FontSize="16"
+               FontAttributes="Bold" />
+        <Button Grid.Column="2"
+                Text="+"
+                WidthRequest="42"
+                HeightRequest="42"
+                MinimumWidthRequest="42"
+                MinimumHeightRequest="42"
+                Padding="0"
+                CornerRadius="18"
+                FontSize="18"
+                FontAttributes="Bold"
+                BackgroundColor="{StaticResource GoldPrimary}"
+                TextColor="#1B100B"
+                Command="{Binding IncrementCommand, Source={x:Reference Root}}"
+                CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+    </Grid>
 </ContentView>

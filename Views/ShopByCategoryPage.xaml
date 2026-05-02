@@ -6,25 +6,41 @@
              x:Class="DBCafeteria.Views.ShopByCategoryPage"
              BackgroundColor="{StaticResource CoffeeBackground}">
     <Grid RowDefinitions="*,Auto" BackgroundColor="{StaticResource CoffeeBackground}">
-        <VerticalStackLayout Grid.Row="0" Spacing="0">
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Margin="0,10,0,0" Color="{StaticResource GoldPrimary}" />
-        <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" Margin="12,8" />
-        <Label Text="No categories are available." TextColor="{StaticResource MutedText}" IsVisible="{Binding IsEmpty}" HorizontalTextAlignment="Center" Margin="12,28" />
-        <CollectionView ItemsSource="{Binding Categories}" Margin="6,0" SelectionMode="None">
+        <CollectionView Grid.Row="0"
+                        ItemsSource="{Binding Categories}"
+                        Margin="14,0"
+                        SelectionMode="None">
             <CollectionView.Header>
-                <Label Text="Shop by Category" Style="{StaticResource HeaderLabel}" Margin="6,14,0,10" />
+                <VerticalStackLayout Spacing="0" Padding="0,14,0,18">
+                    <Label Text="Comprar por categoria" Style="{StaticResource HeaderLabel}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Margin="0,10,0,0" Color="{StaticResource GoldPrimary}" />
+                    <Label Text="{Binding ErrorMessage}" Style="{StaticResource ValidationMessageStyle}" IsVisible="{Binding HasError}" Margin="0,8,0,0" />
+                    <Label Text="No hay categorias disponibles." TextColor="{StaticResource MutedText}" IsVisible="{Binding IsEmpty}" HorizontalTextAlignment="Center" Margin="0,28,0,0" />
+                </VerticalStackLayout>
             </CollectionView.Header>
+            <CollectionView.Footer>
+                <BoxView HeightRequest="22" Color="Transparent" />
+            </CollectionView.Footer>
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="28" VerticalItemSpacing="28" />
+                <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="22" VerticalItemSpacing="22" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Stroke="#1C1613" StrokeThickness="1" BackgroundColor="#0B0908" HeightRequest="136">
+                    <Border Stroke="#1C1613" StrokeThickness="1" BackgroundColor="#0B0908" HeightRequest="142">
                         <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
                         <Grid>
-                            <Image Source="{Binding Image}" Aspect="AspectFill" />
-                            <BoxView Color="#AA8A8A8A" VerticalOptions="End" HeightRequest="36" />
-                            <Label Text="{Binding Name}" VerticalOptions="End" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="16" Margin="0,0,0,8" />
+                            <Image Source="{Binding Image}" Aspect="AspectFit" Margin="6,4,6,34" />
+                            <BoxView Color="#AA8A8A8A" VerticalOptions="End" HeightRequest="38" />
+                            <Label Text="{Binding Name}"
+                                   VerticalOptions="End"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   MaxLines="2"
+                                   LineBreakMode="TailTruncation"
+                                   Margin="4,0,4,2"
+                                   HeightRequest="36" />
                         </Grid>
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference Page}}" CommandParameter="{Binding .}" />
@@ -33,7 +49,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        </VerticalStackLayout>
         <controls:BottomNavigationBar Grid.Row="1" ActiveTab="Menu" />
     </Grid>
 </ContentPage>

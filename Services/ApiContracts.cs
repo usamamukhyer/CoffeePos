@@ -8,6 +8,7 @@ public sealed record ApiCategory(int Id, string Name, string Key, double? Price,
 public sealed record ApiProduct(int Id, int CategoryId, string Name, bool HotAvailable, bool ColdAvailable, double? Price, double? PriceWithTax);
 public sealed record ApiBranch(int Id, string Name, string? Address);
 public sealed record ApiCustomerSearchResult(int Id, string Name, string Phone, string? Email);
+public sealed record ApiCustomerSyncItem(int Id, string Name, string Phone, string? Email, bool IsGuest, bool Active, string Version);
 public sealed record ApiCurrency(string Code, string Symbol);
 public sealed record ApiOption(int Id, string Name, double Price, double PriceWithTax);
 public sealed record ApiCustomization(
@@ -19,6 +20,7 @@ public sealed record ApiCustomization(
     IReadOnlyList<ApiOption> Milks,
     IReadOnlyList<ApiOption> Toppings);
 public sealed record ApiOrderRequest(
+    string? ClientOrderId,
     int? CustomerId,
     bool IsGuest,
     int BranchId,

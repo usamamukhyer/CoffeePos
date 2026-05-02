@@ -8,13 +8,13 @@
           RowDefinitions="*,Auto,Auto,Auto,Auto,Auto,*"
           RowSpacing="24"
           BackgroundColor="{StaticResource CoffeeBackground}">
-        <Label Grid.Row="1" Text="LOGIN / GUEST" Style="{StaticResource AuthTitleStyle}" />
-        <controls:GoldButton Grid.Row="2" Text="Login / Registered" Command="{Binding LoginCommand}" />
-        <controls:GoldButton Grid.Row="3" Text="Create Account / Sign Up" Command="{Binding SignupCommand}" />
-        <controls:GoldButton Grid.Row="4" Text="Continue as Guest" Command="{Binding GuestCommand}" />
+        <Label Grid.Row="1" Text="INICIAR / INVITADO" Style="{StaticResource AuthTitleStyle}" />
+        <controls:GoldButton Grid.Row="2" Text="Iniciar sesion" Command="{Binding LoginCommand}" />
+        <controls:GoldButton Grid.Row="3" Text="Crear cuenta" Command="{Binding SignupCommand}" />
+        <controls:GoldButton Grid.Row="4" Text="Continuar como invitado" Command="{Binding GuestCommand}" />
         <BoxView Grid.Row="5" HeightRequest="1" BackgroundColor="#46342C" Margin="0,28,0,24" />
         <Label Grid.Row="6"
-               Text="Login to access seasonal loyalty"
+               Text="Inicia sesion para acceder a beneficios"
                FontSize="14"
                TextColor="{StaticResource TextWhite}"
                HorizontalTextAlignment="Center"

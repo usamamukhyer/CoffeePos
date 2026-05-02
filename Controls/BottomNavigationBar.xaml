@@ -9,7 +9,7 @@
           HeightRequest="{OnPlatform Android=74, iOS=90, WinUI=74}">
         <VerticalStackLayout Grid.Column="0" Spacing="1" HorizontalOptions="Center">
             <Image Source="tab_order_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
-            <Label Text="Order" FontSize="11" TextColor="{Binding OrderColor, Source={x:Reference Root}}" />
+            <Label Text="Orden" FontSize="11" TextColor="{Binding OrderColor, Source={x:Reference Root}}" />
             <VerticalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnOrderTapped" />
             </VerticalStackLayout.GestureRecognizers>
@@ -30,7 +30,7 @@
         </VerticalStackLayout>
         <VerticalStackLayout Grid.Column="3" Spacing="1" HorizontalOptions="Center">
             <Image Source="tab_profile_gold.png" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center" />
-            <Label Text="Profile" FontSize="11" TextColor="{Binding ProfileColor, Source={x:Reference Root}}" />
+            <Label Text="Perfil" FontSize="11" TextColor="{Binding ProfileColor, Source={x:Reference Root}}" />
             <VerticalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnProfileTapped" />
             </VerticalStackLayout.GestureRecognizers>

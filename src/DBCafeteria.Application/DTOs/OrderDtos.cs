@@ -1,6 +1,7 @@
 namespace DBCafeteria.Application.DTOs;
 
 public sealed record CreateOrderRequest(
+    string? ClientOrderId,
     int? CustomerId,
     bool IsGuest,
     int BranchId,

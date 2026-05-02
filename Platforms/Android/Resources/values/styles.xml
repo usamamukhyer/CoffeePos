@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Maui.MainTheme" parent="Maui.MainTheme.Base">
+        <item name="bottomNavigationViewStyle">@style/DBCafeteriaBottomNavigationView</item>
+    </style>
+
+    <style name="DBCafeteriaBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/DBCafeteriaBottomNavigationTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/DBCafeteriaBottomNavigationTextAppearance</item>
+    </style>
+
+    <style name="Widget.Design.BottomNavigationView" parent="@android:style/Widget">
+        <item name="itemTextAppearanceActive">@style/DBCafeteriaBottomNavigationTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/DBCafeteriaBottomNavigationTextAppearance</item>
+    </style>
+
+    <style name="DBCafeteriaBottomNavigationTextAppearance" parent="TextAppearance.MaterialComponents.Caption" />
+</resources>

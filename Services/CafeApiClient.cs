@@ -24,7 +24,7 @@ public sealed class CafeApiClient(HttpClient httpClient)
     {
         var body = await response.Content.ReadAsStringAsync(cancellationToken);
         if (string.IsNullOrWhiteSpace(body))
-            return $"Request failed with status {(int)response.StatusCode}.";
+            return $"La solicitud fallo con estado {(int)response.StatusCode}.";
 
         try
         {

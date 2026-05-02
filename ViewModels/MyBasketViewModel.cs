@@ -42,31 +42,31 @@ public sealed class MyBasketViewModel : BaseViewModel
     {
         if (BasketItems.Count == 0)
         {
-            SetError("Basket is empty.");
+            SetError("La canasta esta vacia.");
             return;
         }
 
         if (BasketItems.Any(item => item.ProductId <= 0 || item.CategoryId <= 0))
         {
-            SetError("Please reload products from the API before checkout.");
+            SetError("Recarga los productos antes de finalizar.");
             return;
         }
 
         if (_session.BranchId is null)
         {
-            SetError("Please select a branch before checkout.");
+            SetError("Selecciona una sucursal antes de finalizar.");
             return;
         }
 
         if (_session.PickupType == PickupType.PreOrder && _session.PickupDateTime is null)
         {
-            SetError("Please select a pickup date and time before checkout.");
+            SetError("Selecciona fecha y hora de recoleccion antes de finalizar.");
             return;
         }
 
         if (_session.OrderType == OrderType.Gift && _session.GiftRecipientCustomerId is null)
         {
-            SetError("Please select an existing gift recipient before checkout.");
+            SetError("Selecciona un destinatario existente para el regalo.");
             return;
         }
 

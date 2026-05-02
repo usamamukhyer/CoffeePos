@@ -9,6 +9,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
 {
     private readonly OrderSessionService _session = OrderSessionService.Instance;
     private readonly CafeApiClient _apiClient = ApiClientFactory.Create();
+    private readonly LocalMenuCacheService _cache = new();
     private string _productName = string.Empty;
     private string _temperature = string.Empty;
     private string _bean = string.Empty;
@@ -72,7 +73,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
         var selectedProduct = _session.SelectedProduct;
         if (selectedProduct?.Id is null or <= 0)
         {
-            SetError("Unable to load menu. Please try again.");
+            SetError("No se pudo cargar el menu. Intentalo de nuevo.");
             return;
         }
 
@@ -81,12 +82,16 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
             IsBusy = true;
             SetError(string.Empty);
 
-            var customization = await _apiClient.GetAsync<ApiCustomization>($"api/menu/customization/{selectedProduct.Id}");
+            var customization = await _cache.GetCustomizationAsync(selectedProduct.Id);
+            _ = OfflineSyncService.Instance.SyncCustomizationAsync(selectedProduct.Id);
+            customization ??= await _apiClient.GetAsync<ApiCustomization>($"api/menu/customization/{selectedProduct.Id}");
             if (customization is null)
             {
-                SetError("Unable to load menu. Please try again.");
+                SetError("No se pudo cargar el menu. Intentalo de nuevo.");
                 return;
             }
+
+            await _cache.UpsertCustomizationAsync(selectedProduct.Id, customization);
 
             selectedProduct.Name = customization.Product.Name;
             selectedProduct.BasePrice = (decimal)(customization.Product.PriceWithTax ?? customization.Product.Price ?? 0);
@@ -95,7 +100,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
             ProductName = customization.Product.Name;
             _basePrice = selectedProduct.BasePrice;
 
-            ReplaceChoices(Temperatures, customization.Temperatures.Select(x => new ChoiceViewModel(x)));
+            ReplaceChoices(Temperatures, customization.Temperatures.Select(x => new ChoiceViewModel(ToDisplayTemperature(x))));
             ReplaceChoices(Beans, customization.BeanTypes.Select(ToChoice));
             ReplaceChoices(Sizes, customization.Sizes.Select(ToChoice));
             ReplaceChoices(MilkOptions, customization.Milks.Select(ToChoice));
@@ -113,7 +118,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
         }
         catch (Exception ex) when (ex is HttpRequestException or ApiException)
         {
-            SetError("Unable to load menu. Please try again.");
+            SetError("No se pudo cargar el menu. Intentalo de nuevo.");
             ClearCustomization();
         }
         finally
@@ -134,7 +139,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
         var selectedProduct = _session.SelectedProduct;
         if (selectedProduct?.Id is null or <= 0 || !_hasLoaded)
         {
-            SetError("Unable to load menu. Please try again.");
+            SetError("No se pudo cargar el menu. Intentalo de nuevo.");
             return;
         }
 
@@ -150,7 +155,7 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
             MilkId = selectedMilk?.Id,
             BeanTypeId = selectedBean?.Id,
             Name = ProductName,
-            Temperature = CultureInfoInvariantTitle(Temperature),
+            Temperature = Temperature,
             Size = selectedSize?.Title ?? string.Empty,
             Milk = selectedMilk?.Title ?? string.Empty,
             Price = TotalAmount,
@@ -218,5 +223,9 @@ public sealed class CustomizeCoffeeViewModel : BaseViewModel
         OnPropertyChanged(nameof(HasError));
     }
 
-    private static string CultureInfoInvariantTitle(string value) => value.Length == 0 ? value : char.ToUpperInvariant(value[0]) + value[1..].ToLowerInvariant();
+    private static string ToDisplayTemperature(string value) =>
+        value.Equals("Hot", StringComparison.OrdinalIgnoreCase) ? "Caliente" :
+        value.Equals("Cold", StringComparison.OrdinalIgnoreCase) ? "Frio" :
+        value;
+
 }

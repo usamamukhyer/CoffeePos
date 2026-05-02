@@ -11,7 +11,7 @@
             </Border.StrokeShape>
             <Label Text="OK" TextColor="{StaticResource GoldPrimary}" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
         </Border>
-        <Label Grid.Row="2" Text="Your order has been placed successfully." FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-        <controls:GoldButton Grid.Row="3" Text="Back to Home" Command="{Binding BackHomeCommand}" />
+        <Label Grid.Row="2" Text="Tu pedido fue recibido correctamente." FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+        <controls:GoldButton Grid.Row="3" Text="Volver al inicio" Command="{Binding BackHomeCommand}" />
     </Grid>
 </ContentPage>

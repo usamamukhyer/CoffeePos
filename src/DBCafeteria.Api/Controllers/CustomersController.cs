@@ -9,6 +9,25 @@ namespace DBCafeteria.Api.Controllers;
 [Route("api/customers")]
 public sealed class CustomersController(CafeDbContext db) : ControllerBase
 {
+    [HttpGet("sync")]
+    public async Task<ActionResult<IReadOnlyList<CustomerSyncItemDto>>> Sync(CancellationToken cancellationToken)
+    {
+        var customers = await db.Clientes
+            .AsNoTracking()
+            .OrderBy(customer => customer.Id)
+            .Select(customer => new CustomerSyncItemDto(
+                customer.Id,
+                customer.Nombre ?? string.Empty,
+                customer.Telefono.HasValue ? customer.Telefono.Value.ToString() : string.Empty,
+                customer.Email,
+                customer.EsInvitado,
+                customer.Activo,
+                customer.Id + "|" + (customer.Nombre ?? string.Empty) + "|" + (customer.Telefono.HasValue ? customer.Telefono.Value.ToString() : string.Empty) + "|" + (customer.Email ?? string.Empty) + "|" + customer.EsInvitado + "|" + customer.Activo + "|" + customer.FechaRegistro))
+            .ToListAsync(cancellationToken);
+
+        return Ok(customers);
+    }
+
     [HttpGet("search")]
     public async Task<ActionResult<IReadOnlyList<CustomerSearchResultDto>>> Search([FromQuery] string? query, CancellationToken cancellationToken)
     {

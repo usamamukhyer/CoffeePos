@@ -12,20 +12,20 @@
                         <TapGestureRecognizer Command="{Binding BackCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Grid.Column="1" Text="Guest Details" Style="{StaticResource HeaderLabel}" />
+                <Label Grid.Column="1" Text="Datos de invitado" Style="{StaticResource HeaderLabel}" />
             </Grid>
 
-            <Label Text="CONTINUE AS GUEST" Style="{StaticResource HeroLabel}" Margin="0,18,0,6" />
+            <Label Text="CONTINUAR COMO INVITADO" Style="{StaticResource HeroLabel}" Margin="0,18,0,6" />
 
-            <controls:SectionTitle Text="YOUR NAME" />
+            <controls:SectionTitle Text="TU NOMBRE" />
             <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="8" />
                 </Border.StrokeShape>
-                <Entry Placeholder="Enter your name" Text="{Binding GuestName}" />
+                <Entry Placeholder="Escribe tu nombre" Text="{Binding GuestName}" />
             </Border>
 
-            <controls:SectionTitle Text="PHONE (OPTIONAL)" />
+            <controls:SectionTitle Text="TELEFONO (OPCIONAL)" />
             <Border Stroke="{StaticResource DimBorder}" Padding="12,0" BackgroundColor="{StaticResource CoffeeSurface}">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="8" />
@@ -38,7 +38,7 @@
         </VerticalStackLayout>
 
         <Grid Grid.Row="1" Padding="28,10,28,18" BackgroundColor="{StaticResource CoffeeBackground}">
-            <controls:GoldButton Text="CONTINUE" Command="{Binding ContinueCommand}" />
+            <controls:GoldButton Text="CONTINUAR" Command="{Binding ContinueCommand}" />
         </Grid>
     </Grid>
 </ContentPage>
